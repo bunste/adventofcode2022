@@ -4,8 +4,8 @@ defmodule AdventOfCode.Day1 do
     |> Enum.chunk_by(&Kernel.is_nil/1)
     |> Enum.filter(&Enum.all?/1)
     |> Enum.map(&Enum.sum/1)
-    |> Enum.sort
-    |> Enum.take(-1 * number_of_elves)
+    |> Enum.sort(:desc)
+    |> Enum.take(number_of_elves)
     |> Enum.sum
   end
 end
