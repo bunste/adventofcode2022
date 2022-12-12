@@ -1,57 +1,35 @@
 defmodule AdventOfCode.Day2 do
-  @shape_score %{ "A" => 1, "B" => 2, "C" => 3 }
-
-  # For part 1
-  @shapes_aliases %{ "X" => "A", "Y" => "B", "Z" => "C" }
-
-  # For part 2
-  @losing_against %{ "A" => "C", "B" => "A", "C" => "B" }
-  @winning_against %{ "A" => "B", "B" => "C", "C" => "A" }
-
-
-  def points_part1(strategy_guide) do
+  def points_pt1(strategy_guide) do
     strategy_guide
     |> String.split("\n")
-    |> Enum.map(&String.split(&1, " "))
-    |> Enum.map(&preprocess_for_part1/1)
-    |> Enum.map(&single_match_result/1)
+    |> Enum.map(&outcome/1)
     |> Enum.sum
   end
 
-  defp preprocess_for_part1([opponent, me]), do: [opponent, @shapes_aliases[me]]
-
-  def points_part2(strategy_guide) do
+  def points_pt2(strategy_guide) do
     strategy_guide
     |> String.split("\n")
-    |> Enum.map(&String.split(&1, " "))
-    |> Enum.map(&preprocess_for_part2/1)
-    |> Enum.map(&single_match_result/1)
+    |> Enum.map(&outcome_pt2/1)
     |> Enum.sum
   end
 
-  defp preprocess_for_part2([opponent, instruction]) do
-    what_i_play =
-      case instruction do 
-        "X" ->
-          @losing_against[opponent]
-        "Y" -> 
-          opponent
-        "Z" ->
-          @winning_against[opponent]
-      end
-    
-    [opponent, what_i_play]
-  end
+  defp outcome("A X"), do: 4
+  defp outcome("A Y"), do: 8
+  defp outcome("A Z"), do: 3
+  defp outcome("B X"), do: 1
+  defp outcome("B Y"), do: 5
+  defp outcome("B Z"), do: 9
+  defp outcome("C X"), do: 7
+  defp outcome("C Y"), do: 2
+  defp outcome("C Z"), do: 6
 
-  defp single_match_result([opponent, me]) do
-    outcome(opponent, me) + @shape_score[me]
-  end
-
-  defp outcome("C", "A"), do: 6 # Rock defeats Scissors
-  defp outcome("B", "C"), do: 6 # Scissors defeats Paper
-  defp outcome("A", "B"), do: 6 # Paper defeats Rock
-
-  defp outcome(opponent, me) when opponent == me, do: 3
-
-  defp outcome(_, _), do: 0
+  defp outcome_pt2("A X"), do: 3
+  defp outcome_pt2("A Y"), do: 4
+  defp outcome_pt2("A Z"), do: 8
+  defp outcome_pt2("B X"), do: 1
+  defp outcome_pt2("B Y"), do: 5
+  defp outcome_pt2("B Z"), do: 9
+  defp outcome_pt2("C X"), do: 2
+  defp outcome_pt2("C Y"), do: 6
+  defp outcome_pt2("C Z"), do: 7
 end
